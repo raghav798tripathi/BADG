@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,7 +68,7 @@
 </div>
 
 <!-- ============================================================
-     WELCOME OVERLAY (shown once, first login after signup)
+     WELCOME OVERLAY
      ============================================================ -->
 <div id="welcomeOverlay" class="welcome-overlay panel-hidden">
   <div class="welcome-card">
@@ -81,7 +82,7 @@
     <div class="vocab">
       <b>Vocabulary note:</b> this first session is your <b>inaugural</b> login — an adjective meaning
       "marking the beginning of something new." Example: <em>"The company held an inaugural meeting
-      to launch its first project."</em> Your inaugural login is simply your very first one.
+      to launch its first project."</em>
     </div>
     <button class="btn-primary" id="continueBtn" style="max-width:220px;margin:0 auto;">Continue to Dashboard</button>
   </div>
@@ -96,12 +97,10 @@
       <span class="mark">BADG</span>
       <span class="tag">Team</span>
     </div>
-
     <div class="country-select">
       <div class="label">Database</div>
       <div id="countrySwitch"></div>
     </div>
-
     <div class="session-box">
       <span class="user" id="sessionUser"></span>
       <button class="logout-btn" id="logoutBtn">Log Out</button>
@@ -112,11 +111,9 @@
     <div class="main-header">
       <p class="eyebrow">Live Console</p>
       <h1 id="mainTitle">Ledger Tables</h1>
-      <p>Select a table to view its records. Ranges and snapshots are labelled automatically.</p>
+      <p>Select a table to view its records. Use the filter bar to isolate specific date ranges or snapshots.</p>
     </div>
-
     <div class="table-grid" id="tableGrid"></div>
-
     <div class="data-panel" id="dataPanel"></div>
   </main>
 </div>
