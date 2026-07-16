@@ -1,8 +1,11 @@
 /* ============================================================
    BADG TEAM — DATA LAYER (MOCK)
    ============================================================ */
-
 const CURRENT_SYSTEM_DATE = "2026-07-16";
+
+// Global Filter States
+let filterRange = { start: "", end: "" };
+let filterAsOf = "";
 
 function makeCountryDataset(currencySymbol) {
   return {
@@ -12,8 +15,8 @@ function makeCountryDataset(currencySymbol) {
         label: "Sales Invoice", icon: "receipt", dateMode: "range", dateField: "invoice_date",
         columns: ["invoice_number", "invoice_date", "customer_name", "amount", "payment_status"],
         rows: [
-          ["INV-2026-001", "2026-07-01", "Aarav Sharma", 15500.00, "Paid"],
-          ["INV-2026-002", "2026-07-02", "Aditi Rao", 4200.50, "Pending"],
+          ["INV-2026-001", "2026-06-12", "Aarav Sharma", 15500.00, "Paid"], // Data from June for testing
+          ["INV-2026-002", "2026-06-25", "Aditi Rao", 4200.50, "Paid"],
           ["INV-2026-003", "2026-07-03", "Rajesh Patel", 8900.00, "Paid"],
           ["INV-2026-004", "2026-07-05", "Sneha Reddy", 24500.75, "Overdue"],
           ["INV-2026-005", "2026-07-06", "Vikram Singh", 1250.00, "Paid"],
@@ -44,80 +47,53 @@ function makeCountryDataset(currencySymbol) {
         label: "Purchase Order", icon: "truck", dateMode: "range", dateField: "po_date",
         columns: ["po_number", "po_date", "vendor_name", "expected_delivery_date", "total_cost"],
         rows: [
-          ["PO-2026-201", "2026-07-13", "HDFC Bank Supplies", "2026-07-25", 25000.00],
+          ["PO-2026-201", "2026-06-15", "HDFC Bank Supplies", "2026-06-25", 25000.00], // June Data
           ["PO-2026-202", "2026-07-14", "Ambuja Cements", "2026-08-05", 540000.00],
           ["PO-2026-203", "2026-07-14", "Airtel Business Solutions", "2026-07-21", 18500.50],
           ["PO-2026-204", "2026-07-15", "Flipkart Wholesale", "2026-07-28", 115000.75],
-          ["PO-2026-205", "2026-07-16", "Asian Paints Ltd", "2026-08-02", 89200.00],
-          ["PO-2026-206", "2026-07-17", "Maruti Suzuki India", "2026-08-15", 1250000.00],
-          ["PO-2026-207", "2026-07-18", "Cipla Pharmaceuticals", "2026-07-26", 67400.00],
-          ["PO-2026-208", "2026-07-19", "Bharat Petroleum", "2026-07-24", 380000.00],
-          ["PO-2026-209", "2026-07-20", "Schneider Electric India", "2026-08-10", 142300.25],
-          ["PO-2026-210", "2026-07-21", "Zomato Blinkit Logistics", "2026-07-24", 9800.00]
+          ["PO-2026-205", "2026-07-16", "Asian Paints Ltd", "2026-08-02", 89200.00]
         ]
       },
       customer_master: {
-        label: "Customer Master", icon: "users", dateMode: "asOf",
+        label: "Customer Master", icon: "users", dateMode: "none", 
         columns: ["customer_id", "customer_name", "email_address", "phone_number", "city"],
         rows: [
           [1, "Aarav Sharma", "aarav.sharma@example.com", "+919876543210", "Mumbai"],
           [2, "Aditi Rao", "aditi.rao@example.com", "+918765432109", "Bengaluru"],
-          [3, "Rajesh Patel", "rajesh.patel@example.com", "+917654321098", "Ahmedabad"],
-          [4, "Sneha Reddy", "sneha.reddy@example.com", "+916543210987", "Hyderabad"],
-          [5, "Vikram Singh", "vikram.singh@example.com", "+915432109876", "Delhi"],
-          [6, "Priya Nair", "priya.nair@example.com", "+914321098765", "Kochi"],
-          [7, "Amit Verma", "amit.verma@example.com", "+913210987654", "Pune"],
-          [8, "Ananya Chatterjee", "ananya.c@example.com", "+912109876543", "Kolkata"],
-          [9, "Rohan Gupta", "rohan.gupta@example.com", "+911098765432", "Noida"],
-          [10, "Meera Iyer", "meera.iyer@example.com", "+919988776655", "Chennai"]
+          [3, "Rajesh Patel", "rajesh.patel@example.com", "+917654321098", "Ahmedabad"]
         ]
       },
       item_master: {
-        label: "Item Master", icon: "box", dateMode: "asOf",
+        label: "Item Master", icon: "box", dateMode: "none",
         columns: ["item_id", "item_name", "item_category", "standard_cost", "reorder_level"],
         rows: [
           [1, "Heavy Duty Steel Pipes 6-inch", "Raw Materials", 3800.00, 25],
-          [2, "Industrial Safety Helmets (Yellow)", "Safety Equipment", 250.00, 100],
-          [3, "Copper Wiring Harness 10m", "Electrical", 950.00, 30],
-          [4, "High-Grade Concrete Mix 50kg", "Raw Materials", 310.00, 150],
-          [5, "LED Panel Lights 15W", "Electrical", 600.00, 50],
-          [6, "Submersible Water Pump 1.5HP", "Machinery", 7200.00, 10],
-          [7, "Industrial Adhesive Glue 1L", "Consumables", 480.00, 40],
-          [8, "Galvanized Iron Sheets 8x4", "Raw Materials", 2200.00, 20],
-          [9, "Heavy Duty Castor Wheels 4-inch", "Hardware", 180.00, 80],
-          [10, "Polyurethane Foam Spray 500ml", "Consumables", 350.00, 45]
+          [2, "Industrial Safety Helmets", "Safety Equipment", 250.00, 100],
+          [3, "Copper Wiring Harness 10m", "Electrical", 950.00, 30]
         ]
       },
       exchange_master: {
-        label: "Exchange Rate Master", icon: "coins", dateMode: "asOf", dateField: "effective_date",
-        columns: ["currency_code", "currency_name", "exchange_rate", "effective_date"],
+        label: "Exchange Rate Master", icon: "coins", dateMode: "snapshot", dateField: "effective_date",
+        columns: ["effective_date", "currency_code", "currency_name", "exchange_rate"],
         rows: [
-          ["USD", "US Dollar", 83.5000, "2026-07-14"],
-          ["EUR", "Euro", 90.7500, "2026-07-14"],
-          ["GBP", "British Pound", 107.2000, "2026-07-14"],
-          ["AED", "UAE Dirham", 22.7300, "2026-07-14"],
-          ["SGD", "Singapore Dollar", 61.8500, "2026-07-14"],
-          ["AUD", "Australian Dollar", 56.1000, "2026-07-14"],
-          ["CAD", "Canadian Dollar", 61.2000, "2026-07-14"],
-          ["JPY", "Japanese Yen", 0.5200, "2026-07-14"],
-          ["CNY", "Chinese Yuan", 11.4800, "2026-07-14"],
-          ["SAR", "Saudi Riyal", 22.2600, "2026-07-14"]
+          ["2026-07-14", "USD", "US Dollar", 83.5000],
+          ["2026-07-14", "EUR", "Euro", 90.7500],
+          ["2026-07-13", "USD", "US Dollar", 83.4500], // Previous day for filter test
+          ["2026-07-13", "EUR", "Euro", 90.7000]
         ]
       },
       inventory: {
-        label: "Inventory", icon: "warehouse", dateMode: "snapshot",
-        columns: ["item_code", "item_description", "quantity_on_hand", "warehouse_location", "unit_price"],
+        label: "Inventory", icon: "warehouse", dateMode: "snapshot", dateField: "snapshot_date",
+        columns: ["snapshot_date", "item_code", "item_description", "quantity_on_hand", "warehouse_location", "unit_price"],
         rows: [
-          ["ITEM-001", "Heavy Duty Steel Pipes 6-inch", 120, "Mumbai-A1", 4500.00],
-          ["ITEM-002", "Industrial Safety Helmets (Yellow)", 450, "Bengaluru-B4", 350.50],
-          ["ITEM-003", "Copper Wiring Harness 10m", 80, "Chennai-C2", 1200.00],
-          ["ITEM-004", "High-Grade Concrete Mix 50kg", 600, "Delhi-A3", 420.00],
-          ["ITEM-005", "LED Panel Lights 15W", 150, "Pune-D1", 850.75],
-          ["ITEM-006", "Submersible Water Pump 1.5HP", 35, "Kolkata-B2", 8900.00],
-          ["ITEM-007", "Industrial Adhesive Glue 1L", 200, "Ahmedabad-A2", 650.00],
-          ["ITEM-008", "Galvanized Iron Sheets 8x4", 95, "Mumbai-A3", 2800.00],
-          ["ITEM-009", "Heavy Duty Castor Wheels 4-inch", 320, "Bengaluru-B1", 250.25],
-          ["ITEM-010", "Polyurethane Foam Spray 500ml", 180, "Hyderabad-C5", 480.00]
+          // Today's Inventory
+          ["2026-07-16", "ITEM-001", "Heavy Duty Steel Pipes", 120, "Mumbai-A1", 4500.00],
+          ["2026-07-16", "ITEM-002", "Industrial Safety Helmets", 450, "Bengaluru-B4", 350.50],
+          ["2026-07-16", "ITEM-003", "Copper Wiring Harness", 80, "Chennai-C2", 1200.00],
+          // Past Inventory for Filter Demo
+          ["2026-07-10", "ITEM-001", "Heavy Duty Steel Pipes", 200, "Mumbai-A1", 4500.00],
+          ["2026-07-10", "ITEM-002", "Industrial Safety Helmets", 380, "Bengaluru-B4", 350.50],
+          ["2026-07-10", "ITEM-003", "Copper Wiring Harness", 150, "Chennai-C2", 1200.00]
         ]
       }
     }
@@ -130,13 +106,12 @@ const DATABASES = {
 };
 
 const TICKER_FEED = DATABASES.india.tables.exchange_master.rows.map(
-  (r) => `${r[0]} ${r[1]} — ${r[2].toFixed(2)}`
+  (r) => `${r[1]} ${r[2]} — ${r[3].toFixed(2)}`
 );
 
 /* ============================================================
-   AUTH (frontend-only simulation via localStorage)
+   AUTH 
    ============================================================ */
-
 const USERS_KEY = "badg_users";
 const SESSION_KEY = "badg_session";
 
@@ -146,22 +121,19 @@ function saveUsers(users) { localStorage.setItem(USERS_KEY, JSON.stringify(users
 function registerUser(email, password) {
   const users = getUsers();
   const key = email.trim().toLowerCase();
-  if (users[key]) return { ok: false, message: "An account with this email already exists. Please log in instead." };
+  if (users[key]) return { ok: false, message: "Account already exists." };
   users[key] = { email: key, password, hasSeenWelcome: false, createdAt: Date.now() };
-  saveUsers(users);
-  return { ok: true };
+  saveUsers(users); return { ok: true };
 }
 
 function loginUser(email, password) {
   const users = getUsers();
   const key = email.trim().toLowerCase();
   const user = users[key];
-  if (!user) return { ok: false, message: "No account found for this email. Sign up first." };
-  if (user.password !== password) return { ok: false, message: "Incorrect password. Please try again." };
-  const isFirstLogin = !user.hasSeenWelcome;
-  user.hasSeenWelcome = true;
-  saveUsers(users);
-  sessionStorage.setItem(SESSION_KEY, key);
+  if (!user) return { ok: false, message: "No account found." };
+  if (user.password !== password) return { ok: false, message: "Incorrect password." };
+  const isFirstLogin = !user.hasSeenWelcome; user.hasSeenWelcome = true;
+  saveUsers(users); sessionStorage.setItem(SESSION_KEY, key);
   return { ok: true, isFirstLogin };
 }
 
@@ -177,7 +149,6 @@ function logout() {
 /* ============================================================
    DASHBOARD RENDERING
    ============================================================ */
-
 const ICONS = {
   receipt: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2V2Z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>',
   cart: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2 3h2l2.6 12.4a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 2-1.6L22 7H6"/></svg>',
@@ -195,10 +166,6 @@ function fmtDate(iso) {
 function fmtMoney(value, symbol) {
   return symbol + Number(value).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
-function computeDateRange(rows, colIndex) {
-  const dates = rows.map(r => r[colIndex]).sort();
-  return { from: dates[0], to: dates[dates.length - 1] };
-}
 
 let activeCountry = "india";
 let activeTableKey = null;
@@ -214,6 +181,8 @@ function renderCountrySwitch() {
     btn.addEventListener("click", () => {
       activeCountry = btn.dataset.country;
       activeTableKey = null;
+      filterRange = { start: "", end: "" };
+      filterAsOf = "";
       renderAll();
     });
   });
@@ -226,12 +195,14 @@ function renderTableCards() {
     <button class="table-card ${key === activeTableKey ? "active" : ""}" data-key="${key}">
       <div class="ic">${ICONS[t.icon] || ""}</div>
       <h3>${t.label}</h3>
-      <div class="sub">${t.rows.length} records</div>
+      <div class="sub">${t.rows.length} records total</div>
     </button>
   `).join("");
   grid.querySelectorAll(".table-card").forEach(card => {
     card.addEventListener("click", () => {
       activeTableKey = card.dataset.key;
+      filterRange = { start: "", end: "" };
+      filterAsOf = "";
       renderAll();
     });
   });
@@ -245,28 +216,48 @@ function renderDataPanel() {
     return;
   }
   const t = db.tables[activeTableKey];
-  let bannerText = "", stampText = "";
+  let filteredRows = t.rows;
+  let filterUI = "";
+  let stampText = "";
 
-  if (t.dateMode === "range") {
-    const colIndex = t.columns.indexOf(t.dateField);
-    const { from, to } = computeDateRange(t.rows, colIndex);
-    bannerText = `Data shown is from <strong>${fmtDate(from)}</strong> to <strong>${fmtDate(to)}</strong>`;
-    stampText = "Date Range";
-  } else if (t.dateMode === "asOf" && t.dateField) {
-    const colIndex = t.columns.indexOf(t.dateField);
-    const { from, to } = computeDateRange(t.rows, colIndex);
-    bannerText = from === to ? `Data as of <strong>${fmtDate(from)}</strong>` : `Data shown is from <strong>${fmtDate(from)}</strong> to <strong>${fmtDate(to)}</strong>`;
-    stampText = "As Of";
-  } else if (t.dateMode === "asOf") {
-    bannerText = `Master data current as of <strong>${fmtDate(CURRENT_SYSTEM_DATE)}</strong> (no date field on this table — shown as a snapshot)`;
-    stampText = "Snapshot";
-  } else if (t.dateMode === "snapshot") {
-    bannerText = `As of <strong>${fmtDate(CURRENT_SYSTEM_DATE)}</strong>, the inventory record is:`;
-    stampText = "Inventory Snapshot";
+  // Filtering Logic
+  if (t.dateField) {
+    const dateColIdx = t.columns.indexOf(t.dateField);
+    
+    if (t.dateMode === "range") {
+      stampText = "Date Range";
+      if (filterRange.start && filterRange.end) {
+        filteredRows = t.rows.filter(r => r[dateColIdx] >= filterRange.start && r[dateColIdx] <= filterRange.end);
+      }
+      filterUI = `
+        <div class="filter-group">
+          <label>From:</label> <input type="date" id="filterStart" value="${filterRange.start}">
+          <label>To:</label> <input type="date" id="filterEnd" value="${filterRange.end}">
+          <button class="btn-sm" id="btnApply">Apply Filter</button>
+          <button class="btn-sm clear-btn" id="btnClear">Clear</button>
+        </div>
+      `;
+    } 
+    else if (t.dateMode === "snapshot") {
+      stampText = "As Of Date";
+      if (filterAsOf) {
+        filteredRows = t.rows.filter(r => r[dateColIdx] === filterAsOf);
+      }
+      filterUI = `
+        <div class="filter-group">
+          <label>Snapshot Date:</label> <input type="date" id="filterAsOfDate" value="${filterAsOf}">
+          <button class="btn-sm" id="btnApply">Apply Filter</button>
+          <button class="btn-sm clear-btn" id="btnClear">Clear</button>
+        </div>
+      `;
+    }
+  } else {
+    stampText = "Master Data";
+    filterUI = `<div class="filter-group"><label>No date filter available for master data.</label></div>`;
   }
 
   const headerRow = t.columns.map(c => `<th>${c.replace(/_/g, " ")}</th>`).join("");
-  const bodyRows = t.rows.map(r => `
+  const bodyRows = filteredRows.map(r => `
     <tr>${r.map((cell, i) => {
       const col = t.columns[i];
       if (col === "payment_status" || col === "order_status") return `<td><span class="status-pill status-${cell}">${cell}</span></td>`;
@@ -278,17 +269,41 @@ function renderDataPanel() {
   `).join("");
 
   panel.innerHTML = `
-    <div class="date-banner">
+    <div class="filter-bar">
       <span class="stamp">${stampText}</span>
-      <span>${bannerText}</span>
+      ${filterUI}
     </div>
     <div class="table-scroll">
       <table class="data-table">
         <thead><tr>${headerRow}</tr></thead>
-        <tbody>${bodyRows}</tbody>
+        <tbody>${bodyRows.length ? bodyRows : `<tr><td colspan="${t.columns.length}" style="text-align:center; padding: 30px;">No records found for selected dates.</td></tr>`}</tbody>
       </table>
     </div>
   `;
+
+  // Attach Event Listeners for Filter Buttons
+  const btnApply = document.getElementById("btnApply");
+  const btnClear = document.getElementById("btnClear");
+
+  if (btnApply) {
+    btnApply.addEventListener("click", () => {
+      if (t.dateMode === "range") {
+        filterRange.start = document.getElementById("filterStart").value;
+        filterRange.end = document.getElementById("filterEnd").value;
+      } else if (t.dateMode === "snapshot") {
+        filterAsOf = document.getElementById("filterAsOfDate").value;
+      }
+      renderDataPanel();
+    });
+  }
+  
+  if (btnClear) {
+    btnClear.addEventListener("click", () => {
+      filterRange = { start: "", end: "" };
+      filterAsOf = "";
+      renderDataPanel();
+    });
+  }
 }
 
 function renderAll() {
@@ -318,7 +333,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const formSignup = document.getElementById("formSignup");
   const formLogin = document.getElementById("formLogin");
 
-  // YAHAN MAINE LOGIC UPDATE KIYA HAI
   function showTab(which) {
     if (which === "signup") {
       tabSignup.classList.add("active");
@@ -354,7 +368,6 @@ document.addEventListener("DOMContentLoaded", () => {
     msg.textContent = "Account created. Switching you to log in...";
     msg.className = "form-msg ok";
     
-    // Switch to login tab automatically after 900ms
     setTimeout(() => {
       showTab("login");
       document.getElementById("loginEmail").value = email;
