@@ -1,1 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BADG Team — Ledger Console</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+<div class="ambient-bg"></div>
+
+<!-- ============================================================
+     SCREEN 1: AUTH (Sign Up / Log In)
+     ============================================================ -->
+<div id="screenAuth" class="auth-page">
+  <div class="ticker">
+    <div class="ticker__track" id="tickerTrack"></div>
+  </div>
+
+  <div class="auth-stage">
+    <div style="width:100%; max-width:420px;">
+      <div class="brandmark">
+        <span class="mark">BADG</span>
+        <span class="tag">Team Ledger Console</span>
+      </div>
+      <p class="auth-subtitle">One console for every invoice, order and rate — across borders.</p>
+
+      <div class="auth-card">
+        <div class="tab-switch">
+          <button id="tabSignup" class="active" type="button">Sign Up</button>
+          <button id="tabLogin" type="button">Log In</button>
+        </div>
+
+        <form id="formSignup" novalidate>
+          <div class="field">
+            <label for="signupEmail">Email address</label>
+            <input type="email" id="signupEmail" placeholder="you@company.com" required />
+          </div>
+          <div class="field">
+            <label for="signupPassword">Password</label>
+            <input type="password" id="signupPassword" placeholder="At least 6 characters" required />
+          </div>
+          <div class="field">
+            <label for="signupConfirm">Confirm password</label>
+            <input type="password" id="signupConfirm" placeholder="Re-enter your password" required />
+          </div>
+          <button class="btn-primary" type="submit">Create Account</button>
+          <p class="form-msg" id="signupMsg"></p>
+        </form>
+
+        <form id="formLogin" class="panel-hidden" novalidate>
+          <div class="field">
+            <label for="loginEmail">Email address</label>
+            <input type="email" id="loginEmail" placeholder="you@company.com" required />
+          </div>
+          <div class="field">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="Your password" required />
+          </div>
+          <button class="btn-primary" type="submit">Log In</button>
+          <p class="form-msg" id="loginMsg"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     WELCOME OVERLAY (shown once, first login after signup)
+     ============================================================ -->
+<div id="welcomeOverlay" class="welcome-overlay panel-hidden">
+  <div class="welcome-card">
+    <div class="seal">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+    </div>
+    <h2>Welcome to BADG Team</h2>
+    <p>Congratulations — your account is verified and you're officially a new user on the console.</p>
+    <div class="vocab">
+      <b>Vocabulary note:</b> this first session is your <b>inaugural</b> login — an adjective meaning
+      "marking the beginning of something new." Example: <em>"The company held an inaugural meeting
+      to launch its first project."</em> Your inaugural login is simply your very first one.
+    </div>
+    <button class="btn-primary" id="continueBtn" style="max-width:220px;margin:0 auto;">Continue to Dashboard</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     SCREEN 2: DASHBOARD
+     ============================================================ -->
+<div id="screenDashboard" class="app-shell panel-hidden">
+  <aside class="sidebar">
+    <div class="brandmark">
+      <span class="mark">BADG</span>
+      <span class="tag">Team</span>
+    </div>
+
+    <div class="country-select">
+      <div class="label">Database</div>
+      <div id="countrySwitch"></div>
+    </div>
+
+    <div class="session-box">
+      <span class="user" id="sessionUser"></span>
+      <button class="logout-btn" id="logoutBtn">Log Out</button>
+    </div>
+  </aside>
+
+  <main class="main-area">
+    <div class="main-header">
+      <p class="eyebrow">Live Console</p>
+      <h1 id="mainTitle">Ledger Tables</h1>
+      <p>Select a table to view its records. Ranges and snapshots are labelled automatically.</p>
+    </div>
+
+    <div class="table-grid" id="tableGrid"></div>
+
+    <div class="data-panel" id="dataPanel"></div>
+  </main>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
